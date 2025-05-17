@@ -30,9 +30,9 @@ LIMIT 10;
 
 --2.What's the distribution of Movies vs TV Shows on Netflix?
 
-SELECT type_mo, COUNT(*) AS count
+SELECT type, COUNT(*) AS count
 FROM netflix
-GROUP BY type_mo;
+GROUP BY type;
 
 --3. Is Netflix adding more content now than before?
 
@@ -65,9 +65,9 @@ SELECT
   type_mo,
   AVG(CAST(SPLIT_PART(duration, ' ', 1) AS INT)) AS avg_movie_duration
 FROM netflix
-WHERE type_mo = 'Movie'
+WHERE type = 'Movie'
   AND duration ~ '^[0-9]+'
-  group by type_mo
+  group by type
 
 
 
@@ -89,7 +89,7 @@ LIMIT 5;
 
 SELECT country, COUNT(*) AS total_tv
 FROM netflix
-WHERE type_mo = 'TV Show'
+WHERE type = 'TV Show'
 AND country IS NOT NULL
 GROUP BY country
 ORDER BY total_tv DESC
@@ -101,7 +101,7 @@ SELECT
   title,
   CAST(SPLIT_PART(duration, ' ', 1) AS INT) AS seasons
 FROM netflix
-WHERE type_mo = 'TV Show'
+WHERE type = 'TV Show'
 ORDER BY seasons DESC
 LIMIT 10;
 
@@ -199,11 +199,11 @@ LIMIT 5;
 
 SELECT title, duration
 FROM netflix
-WHERE type_mo = 'Movie'
+WHERE type = 'Movie'
   AND CAST(SPLIT_PART(duration, ' ', 1) AS INT) = (
     SELECT MAX(CAST(SPLIT_PART(duration, ' ', 1) AS INT))
     FROM netflix
-    WHERE type_mo = 'Movie'
+    WHERE type = 'Movie'
   );
 
 --18. Create a stored function to return the number of movies a given actor has appeared in on Netflix.
